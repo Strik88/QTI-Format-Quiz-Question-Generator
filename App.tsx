@@ -207,8 +207,9 @@ const App = () => {
               <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 flex gap-3">
                 <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div className="text-sm text-amber-800">
-                  <p className="font-semibold mb-1">Tip voor de beste resultaten:</p>
-                  <p>Zorg dat je vragen duidelijk gescheiden zijn. De AI werkt het beste als de tekst gestructureerd is (bijv. met nummers of bullets), maar kan ook overweg met ruwe tekst.</p>
+                  <p className="font-semibold mb-1">Aanbevolen workflow voor de beste resultaten:</p>
+                  <p className="mb-2">Laad je bronbestanden (PDF's, docs, etc.) in <span className="font-bold">NotebookLM</span>, laat daar de gewenste vragen genereren en kopieer/plak de tekst vervolgens hier.</p>
+                  <p>Zorg dat vragen duidelijk gescheiden zijn. De AI werkt het beste als de tekst gestructureerd is, maar kan ook overweg met ruwe tekst.</p>
                 </div>
               </div>
             </div>
