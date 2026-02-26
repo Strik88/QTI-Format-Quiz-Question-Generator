@@ -1,0 +1,5 @@
+{
+  "name": "Canvas QTI Maker",
+  "description": "Upload markdown docs, generate AI-powered quizzes, and export to QTI 2.1 for Canvas LMS.",
+  "requestFramePermissions": []
+}
