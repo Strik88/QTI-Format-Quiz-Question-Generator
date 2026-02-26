@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, FileText, Loader2, Download, AlertCircle, RefreshCw, ClipboardType } from 'lucide-react';
+import { Upload, FileText, Loader2, Download, AlertCircle, RefreshCw, ClipboardType, HelpCircle, CheckCircle2, Info } from 'lucide-react';
 import { parseMarkdownToQuiz } from './services/geminiService';
 import { createQtiZip } from './services/qtiService';
 import { QuizData, ProcessingState } from './types';
@@ -92,83 +92,127 @@ const App = () => {
         
         {/* Input Section (Tabs) */}
         {!quizData && state.status !== 'analyzing' && state.status !== 'reading' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            
-            {/* Tabs Header */}
-            <div className="flex border-b border-slate-200">
-              <button
-                onClick={() => setActiveTab('upload')}
-                className={`flex-1 py-4 text-sm font-medium text-center transition-colors flex items-center justify-center gap-2
-                  ${activeTab === 'upload' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}
-                `}
-              >
-                <Upload className="w-4 h-4" />
-                Bestand Uploaden
-              </button>
-              <button
-                onClick={() => setActiveTab('paste')}
-                className={`flex-1 py-4 text-sm font-medium text-center transition-colors flex items-center justify-center gap-2
-                  ${activeTab === 'paste' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}
-                `}
-              >
-                <ClipboardType className="w-4 h-4" />
-                Tekst Plakken
-              </button>
-            </div>
-
-            {/* Tab Content */}
-            <div className="p-8">
-              {state.status === 'error' ? (
-                 <div className="flex flex-col items-center text-red-600 animate-in fade-in zoom-in py-8">
-                  <AlertCircle className="w-16 h-16 mb-4" />
-                  <h3 className="text-xl font-semibold">Fout bij verwerken</h3>
-                  <p className="mt-2 text-sm opacity-80">{state.message}</p>
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); reset(); }}
-                    className="mt-6 px-4 py-2 bg-white border border-red-200 rounded-lg text-sm font-medium shadow-sm hover:bg-red-50"
-                  >
-                    Probeer opnieuw
-                  </button>
-                </div>
-              ) : activeTab === 'upload' ? (
-                <div 
-                  className="border-2 border-dashed border-slate-300 rounded-xl p-10 text-center hover:border-indigo-400 hover:bg-slate-50 transition-all cursor-pointer"
-                  onClick={() => fileInputRef.current?.click()}
+          <>
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+              
+              {/* Tabs Header */}
+              <div className="flex border-b border-slate-200">
+                <button
+                  onClick={() => setActiveTab('upload')}
+                  className={`flex-1 py-4 text-sm font-medium text-center transition-colors flex items-center justify-center gap-2
+                    ${activeTab === 'upload' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}
+                  `}
                 >
-                  <input 
-                    type="file" 
-                    accept=".md,.txt" 
-                    className="hidden" 
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
-                  />
-                  <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Upload className="w-8 h-8 text-indigo-600" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-slate-900">Klik om te uploaden</h3>
-                  <p className="mt-1 text-sm text-slate-500">Ondersteunt .md en .txt bestanden</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <textarea
-                    className="w-full h-64 p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 placeholder:text-slate-400 resize-none font-mono text-sm"
-                    placeholder="Plak hier je vragen en antwoorden..."
-                    value={pastedText}
-                    onChange={(e) => setPastedText(e.target.value)}
-                  ></textarea>
-                  <div className="flex justify-end">
-                    <button
-                      onClick={handleTextSubmit}
-                      disabled={!pastedText.trim()}
-                      className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                  <Upload className="w-4 h-4" />
+                  Bestand Uploaden
+                </button>
+                <button
+                  onClick={() => setActiveTab('paste')}
+                  className={`flex-1 py-4 text-sm font-medium text-center transition-colors flex items-center justify-center gap-2
+                    ${activeTab === 'paste' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}
+                  `}
+                >
+                  <ClipboardType className="w-4 h-4" />
+                  Tekst Plakken
+                </button>
+              </div>
+
+              {/* Tab Content */}
+              <div className="p-8">
+                {state.status === 'error' ? (
+                   <div className="flex flex-col items-center text-red-600 animate-in fade-in zoom-in py-8">
+                    <AlertCircle className="w-16 h-16 mb-4" />
+                    <h3 className="text-xl font-semibold">Fout bij verwerken</h3>
+                    <p className="mt-2 text-sm opacity-80">{state.message}</p>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); reset(); }}
+                      className="mt-6 px-4 py-2 bg-white border border-red-200 rounded-lg text-sm font-medium shadow-sm hover:bg-red-50"
                     >
-                      Genereer Quiz
+                      Probeer opnieuw
                     </button>
                   </div>
-                </div>
-              )}
+                ) : activeTab === 'upload' ? (
+                  <div 
+                    className="border-2 border-dashed border-slate-300 rounded-xl p-10 text-center hover:border-indigo-400 hover:bg-slate-50 transition-all cursor-pointer"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <input 
+                      type="file" 
+                      accept=".md,.txt" 
+                      className="hidden" 
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                    />
+                    <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Upload className="w-8 h-8 text-indigo-600" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900">Klik om te uploaden</h3>
+                    <p className="mt-1 text-sm text-slate-500">Ondersteunt .md en .txt bestanden</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <textarea
+                      className="w-full h-64 p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 placeholder:text-slate-400 resize-none font-mono text-sm"
+                      placeholder="Plak hier je vragen en antwoorden..."
+                      value={pastedText}
+                      onChange={(e) => setPastedText(e.target.value)}
+                    ></textarea>
+                    <div className="flex justify-end">
+                      <button
+                        onClick={handleTextSubmit}
+                        disabled={!pastedText.trim()}
+                        className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+                      >
+                        Genereer Quiz
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+
+            {/* Instructions Section */}
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-6">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <HelpCircle className="w-6 h-6 text-indigo-600" />
+                <h2 className="text-xl font-bold text-slate-900">Hoe werkt het?</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="space-y-3">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold">1</div>
+                  <h3 className="font-semibold text-slate-900">Invoer</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Upload een Markdown of tekstbestand, of plak direct je tekst in het tekstveld. De AI herkent automatisch vragen en antwoordopties.
+                  </p>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold">2</div>
+                  <h3 className="font-semibold text-slate-900">Controleer</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Bekijk de gegenereerde preview. Je ziet direct welke vragen zijn herkend en wat de correcte antwoorden zijn volgens de AI.
+                  </p>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold">3</div>
+                  <h3 className="font-semibold text-slate-900">Download & Import</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Download het QTI .zip bestand en importeer dit direct in Canvas via <span className="font-medium">Instellingen &gt; Cursusinhoud importeren</span>.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border border-amber-100 rounded-xl p-4 flex gap-3">
+                <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-sm text-amber-800">
+                  <p className="font-semibold mb-1">Tip voor de beste resultaten:</p>
+                  <p>Zorg dat je vragen duidelijk gescheiden zijn. De AI werkt het beste als de tekst gestructureerd is (bijv. met nummers of bullets), maar kan ook overweg met ruwe tekst.</p>
+                </div>
+              </div>
+            </div>
+          </>
         )}
 
         {/* Loading State */}

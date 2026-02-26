@@ -1,0 +1,242 @@
+[
+  {
+    "id": 0,
+    "author": "user",
+    "payload": {
+      "type": "text",
+      "text": "maak een super simpele, maar werkende tool waarmee ik vragen en antwoorden kan uploaden die het daarna automatisch in 2.x zip files exporteert voor canvas lms import. Ik wil graag een md document uploaden en dan met AI zorgen dat het automatisch in de juiste structuur wordt geladen. De output moet een zip file zijn die ik kan importeren in canvas\n\n",
+      "files": [],
+      "fileUploads": [],
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1769610194,
+      "nanos": 528000000
+    }
+  },
+  {
+    "id": 1,
+    "author": "model",
+    "payload": {
+      "type": "thinking",
+      "text": "**Defining the QTI Generator**\n\nI'm now zeroing in on defining the QTI generator web app. My primary focus is on how it will interpret the Markdown input. I am particularly considering the structure for questions, answer options, and feedback, with an eye toward supporting different question types. I'm prioritizing user-friendliness and efficient Markdown parsing. I'm also planning the design and layout of the user interface.\n\n\n**Outlining the Core Features**\n\nI've been solidifying the core features. The plan is for the app to take a Markdown file, parse it with AI (Gemini), convert it to QTI XML, zip it up, and let the user download it. I'm focusing now on the specifics of using the Gemini model, particularly the prompt for question extraction, and the initial JSON format for the AI's output. The UI design is also taking shape.\n\n\n**Detailing the Technology Stack**\n\nI've decided on the technical underpinnings. I'll be using TypeScript, Tailwind CSS, and `jszip` for client-side zip creation, `uuid` for QTI's unique IDs, and `lucide-react` for icons. I'm structuring a standard React app with these elements. My focus has shifted to the service layer and QTI generation.\n\n\n\n**Refining the QTI Structure**\n\nI'm now focusing on generating a valid \"QTI 2.1 package.\" I've learned Canvas has specific import requirements. QTI 1.2 is simpler, but I need to generate 2.1 per the prompt. This includes an `imsmanifest.xml` and an assessment directory with `.xml` files. I plan to generate a simplified 2.1 package suitable for a single-file/browser environment, and I will use `uuid` for unique IDs. I'm also planning the core React components: `App`, `FileUpload`, `QuizPreview`, and `ExportButton`. Also, I am revising the AI prompt to handle varied Markdown formats with a robust schema.\n\n\n**Clarifying the QTI Structure**\n\nI'm now focusing on refining the QTI structure, especially in relation to Canvas compatibility. I'm aiming for a QTI 2.1 structure, but I'm thinking about the simplest valid package required. This means `imsmanifest.xml`, `assessment/assessment.xml`, and individual item files. I must consider that QTI 1.2 is often what users really need, but I must follow the user's instructions for 2.x. For now, I'm focusing on metadata to structure items for highest success.\n\n\n**Listing the Dependencies**\n\nI've specified the required dependencies. I will use `jszip`, `uuid`, `lucide-react`, and `@google/genai`. I'm also considering the language of the user interface. It seems I should go with Dutch, to align with the prompt. The overall structure will be a React app. I have also began thinking about how I will create the QTI items, and found I need to consider using template strings to reduce boilerplate code.\n\n\n\n**Defining the Workflow**\n\nNow I'm focusing on the `qtiGenerator.ts` workflow. I will receive parsed JSON from Gemini, and then I'll create a JSZip instance to create the core files: `imsmanifest.xml`, `assessment.xml`, and individual `item_UUID.xml` files. I am refining the QTI 2.1 structure, recognizing Canvas's ability to handle imports. Specifically, I am focusing on multiple choice and true/false questions for this iteration, as these are easier to implement correctly in the limited timeframe.\n\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1769610194,
+      "nanos": 528000000
+    },
+    "doneTimestamp": {
+      "seconds": 1769610222,
+      "nanos": 364000000
+    }
+  },
+  {
+    "id": 2,
+    "author": "model",
+    "payload": {
+      "type": "text",
+      "text": "Here is the complete code for your \"Super Simple QTI Generator\" tool. This application uses React, Tailwind CSS, and the Google GenAI SDK to parse Markdown files into structured quizzes and export them as a Canvas-compatible QTI 2.1 Zip package.\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1769610222,
+      "nanos": 364000000
+    },
+    "doneTimestamp": {
+      "seconds": 1769610222,
+      "nanos": 722000000
+    }
+  },
+  {
+    "id": 3,
+    "author": "model",
+    "payload": {
+      "type": "generationTable",
+      "entries": [
+        {
+          "path": "metadata.json",
+          "generationType": 0,
+          "isDone": true,
+          "description": "App metadata",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "{\n  \"name\": \"Canvas QTI Maker\",\n  \"description\": \"Upload markdown docs, generate AI-powered quizzes, and export to QTI 2.1 for Canvas LMS.\"\n}"
+            }
+          ]
+        },
+        {
+          "path": "index.html",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Root HTML with Tailwind",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "<!DOCTYPE html>\n<html lang=\"nl\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Canvas QTI Maker AI</title>\n    <script src=\"https://cdn.tailwindcss.com\"></script>\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap\" rel=\"stylesheet\">\n    <style>\n      body { font-family: 'Inter', sans-serif; }\n    </style>\n  </head>\n  <body class=\"bg-slate-50 text-slate-900 antialiased\">\n    <div id=\"root\"></div>\n  </body>\n</html>"
+            }
+          ]
+        },
+        {
+          "path": "index.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "React Entry Point",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App';\n\nconst rootElement = document.getElementById('root');\nif (!rootElement) {\n  throw new Error(\"Could not find root element to mount to\");\n}\n\nconst root = ReactDOM.createRoot(rootElement);\nroot.render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);"
+            }
+          ]
+        },
+        {
+          "path": "types.ts",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Shared Types",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "export enum QuestionType {\n  MULTIPLE_CHOICE = 'multiple_choice',\n  TRUE_FALSE = 'true_false',\n  SHORT_ANSWER = 'short_answer',\n  ESSAY = 'essay'\n}\n\nexport interface Answer {\n  id: string;\n  text: string;\n  isCorrect: boolean;\n}\n\nexport interface Question {\n  id: string;\n  type: QuestionType;\n  text: string;\n  points: number;\n  answers: Answer[];\n  feedback?: string;\n}\n\nexport interface QuizData {\n  title: string;\n  description: string;\n  questions: Question[];\n}\n\nexport interface ProcessingState {\n  status: 'idle' | 'reading' | 'analyzing' | 'generating_zip' | 'done' | 'error';\n  message: string;\n}"
+            }
+          ]
+        },
+        {
+          "path": "services/geminiService.ts",
+          "generationType": 0,
+          "isDone": true,
+          "description": "AI Parsing Service",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "import { GoogleGenAI, Type } from \"@google/genai\";\nimport { QuizData, QuestionType } from \"../types\";\n\nexport const parseMarkdownToQuiz = async (markdownText: string): Promise<QuizData> => {\n  const apiKey = process.env.API_KEY;\n  if (!apiKey) {\n    throw new Error(\"API Key ontbreekt. Controleer je configuratie.\");\n  }\n\n  const ai = new GoogleGenAI({ apiKey });\n\n  const prompt = `\n    Je bent een expert in het maken van educatieve toetsen voor Canvas LMS.\n    Analyseer de volgende tekst (Markdown) en extraheer een structuur voor een quiz.\n    \n    De tekst kan vragen bevatten, antwoorden, en eventueel punten.\n    Probeer zo goed mogelijk het type vraag te bepalen:\n    - Multiple Choice (één goed antwoord uit meerdere opties)\n    - True/False (Waar/Niet waar)\n    - Short Answer (Kort antwoord, invuloefening)\n    - Essay (Open vraag)\n\n    Als er geen punten staan vermeld, gebruik dan 1 punt als standaard.\n    Als er geen titel is, bedenk een passende titel op basis van de inhoud.\n    Zorg dat elke vraag minimaal één correct antwoord heeft (tenzij het een essay vraag is).\n    \n    Invoer tekst:\n    ${markdownText}\n  `;\n\n  // We definiëren een strict schema voor de output zodat we het direct kunnen gebruiken.\n  const response = await ai.models.generateContent({\n    model: 'gemini-3-flash-preview',\n    contents: prompt,\n    config: {\n      responseMimeType: \"application/json\",\n      responseSchema: {\n        type: Type.OBJECT,\n        properties: {\n          title: { type: Type.STRING, description: \"Titel van de quiz\" },\n          description: { type: Type.STRING, description: \"Korte beschrijving of instructie\" },\n          questions: {\n            type: Type.ARRAY,\n            items: {\n              type: Type.OBJECT,\n              properties: {\n                text: { type: Type.STRING, description: \"De vraagstelling\" },\n                type: { \n                  type: Type.STRING, \n                  enum: [\n                    QuestionType.MULTIPLE_CHOICE, \n                    QuestionType.TRUE_FALSE, \n                    QuestionType.SHORT_ANSWER,\n                    QuestionType.ESSAY\n                  ] \n                },\n                points: { type: Type.NUMBER, description: \"Aantal punten\" },\n                feedback: { type: Type.STRING, description: \"Algemene feedback voor de student\" },\n                answers: {\n                  type: Type.ARRAY,\n                  items: {\n                    type: Type.OBJECT,\n                    properties: {\n                      text: { type: Type.STRING, description: \"Antwoord tekst\" },\n                      isCorrect: { type: Type.BOOLEAN, description: \"Is dit het juiste antwoord?\" }\n                    },\n                    required: [\"text\", \"isCorrect\"]\n                  }\n                }\n              },\n              required: [\"text\", \"type\", \"points\", \"answers\"]\n            }\n          }\n        },\n        required: [\"title\", \"questions\"]\n      }\n    }\n  });\n\n  const text = response.text;\n  if (!text) throw new Error(\"Geen antwoord ontvangen van AI.\");\n\n  try {\n    const rawData = JSON.parse(text);\n    \n    // Post-processing om ID's toe te voegen die we nodig hebben voor React keys en QTI\n    const processedData: QuizData = {\n      ...rawData,\n      questions: rawData.questions.map((q: any) => ({\n        ...q,\n        id: crypto.randomUUID(),\n        answers: q.answers.map((a: any) => ({\n          ...a,\n          id: crypto.randomUUID()\n        }))\n      }))\n    };\n\n    return processedData;\n  } catch (e) {\n    console.error(\"Parse error\", e);\n    throw new Error(\"Kon de AI respons niet verwerken tot een geldige quiz structuur.\");\n  }\n};"
+            }
+          ]
+        },
+        {
+          "path": "services/qtiService.ts",
+          "generationType": 0,
+          "isDone": true,
+          "description": "QTI 2.1 XML Generator using JSZip",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "import JSZip from 'jszip';\nimport { QuizData, Question, QuestionType } from '../types';\n\n// Helper to escape XML characters\nconst escapeXml = (unsafe: string) => {\n  return unsafe.replace(/[<>&'\"]/g, (c) => {\n    switch (c) {\n      case '<': return '&lt;';\n      case '>': return '&gt;';\n      case '&': return '&amp;';\n      case '\\'': return '&apos;';\n      case '\"': return '&quot;';\n      default: return c;\n    }\n  });\n};\n\n// Generates the unique identifier for the manifest\nconst generateManifestId = () => `MANIFEST-${crypto.randomUUID()}`;\n\n// 1. Generate imsmanifest.xml\nconst generateManifest = (quiz: QuizData, questionIds: string[]) => {\n  const manifestId = generateManifestId();\n  const resources = questionIds.map(id => `\n    <resource identifier=\"resource_${id}\" type=\"imsqti_item_xmlv2p1\" href=\"items/${id}.xml\">\n      <file href=\"items/${id}.xml\"/>\n    </resource>\n  `).join('\\n');\n\n  // Add the assessment resource\n  const assessmentResourceId = `resource_assessment_${crypto.randomUUID()}`;\n  const assessmentHref = \"assessment/assessment.xml\";\n\n  return `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<manifest xmlns=\"http://www.imsglobal.org/xsd/imscp_v1p1\"\n          xmlns:imsmd=\"http://www.imsglobal.org/xsd/imsmd_v1p2\"\n          xmlns:imsqti=\"http://www.imsglobal.org/xsd/imsqti_v2p1\"\n          xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n          xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imscp_v1p1 http://www.imsglobal.org/xsd/imscp_v1p1.xsd http://www.imsglobal.org/xsd/imsmd_v1p2 http://www.imsglobal.org/xsd/imsmd_v1p2p2.xsd http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd\"\n          identifier=\"${manifestId}\">\n  <metadata>\n    <schema>IMS Content</schema>\n    <schemaversion>1.1.3</schemaversion>\n    <imsmd:lom>\n      <imsmd:general>\n        <imsmd:title>\n          <imsmd:langstring xml:lang=\"en\">${escapeXml(quiz.title)}</imsmd:langstring>\n        </imsmd:title>\n        <imsmd:description>\n           <imsmd:langstring xml:lang=\"en\">${escapeXml(quiz.description || \"Generated by AI QTI Tool\")}</imsmd:langstring>\n        </imsmd:description>\n      </imsmd:general>\n    </imsmd:lom>\n  </metadata>\n  <organizations/>\n  <resources>\n    <resource identifier=\"${assessmentResourceId}\" type=\"imsqti_test_xmlv2p1\" href=\"${assessmentHref}\">\n      <file href=\"${assessmentHref}\"/>\n      ${questionIds.map(id => `<dependency identifierref=\"resource_${id}\"/>`).join('\\n      ')}\n    </resource>\n    ${resources}\n  </resources>\n</manifest>`;\n};\n\n// 2. Generate Assessment XML (The Test definition)\nconst generateAssessment = (quiz: QuizData, questions: Question[]) => {\n  const testId = `TEST-${crypto.randomUUID()}`;\n  const partId = `PART-${crypto.randomUUID()}`;\n  const sectionId = `SECTION-${crypto.randomUUID()}`;\n\n  const assessmentItems = questions.map(q => `\n        <assessmentItemRef identifier=\"itemref_${q.id}\" href=\"../items/${q.id}.xml\" fixed=\"false\"/>\n  `).join('\\n');\n\n  return `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<assessmentTest xmlns=\"http://www.imsglobal.org/xsd/imsqti_v2p1\"\n                xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd\"\n                identifier=\"${testId}\" title=\"${escapeXml(quiz.title)}\">\n  <testPart identifier=\"${partId}\" navigationMode=\"linear\" submissionMode=\"individual\">\n    <assessmentSection identifier=\"${sectionId}\" title=\"Main Section\" visible=\"true\">\n      ${assessmentItems}\n    </assessmentSection>\n  </testPart>\n</assessmentTest>`;\n};\n\n// 3. Generate Item XML (Individual Questions)\nconst generateItem = (q: Question) => {\n  const responseId = `RESPONSE_${q.id}`;\n  \n  // -- Multiple Choice & True/False Logic --\n  if (q.type === QuestionType.MULTIPLE_CHOICE || q.type === QuestionType.TRUE_FALSE) {\n    const correctAnswers = q.answers.filter(a => a.isCorrect);\n    // If no correct answer found, fallback to first (should act differently but for safety)\n    const validCorrectId = correctAnswers.length > 0 ? correctAnswers[0].id : q.answers[0]?.id;\n\n    return `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<assessmentItem xmlns=\"http://www.imsglobal.org/xsd/imsqti_v2p1\"\n                xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd\"\n                identifier=\"${q.id}\" title=\"${escapeXml(q.text.substring(0, 50))}...\" adaptive=\"false\" timeDependent=\"false\">\n  <responseDeclaration identifier=\"RESPONSE\" cardinality=\"single\" baseType=\"identifier\">\n    <correctResponse>\n      <value>${validCorrectId}</value>\n    </correctResponse>\n  </responseDeclaration>\n  <outcomeDeclaration identifier=\"SCORE\" cardinality=\"single\" baseType=\"float\">\n    <defaultValue>\n      <value>0</value>\n    </defaultValue>\n  </outcomeDeclaration>\n  <itemBody>\n    <choiceInteraction responseIdentifier=\"RESPONSE\" shuffle=\"false\" maxChoices=\"1\">\n      <prompt>${escapeXml(q.text)}</prompt>\n      ${q.answers.map(a => `\n      <simpleChoice identifier=\"${a.id}\">${escapeXml(a.text)}</simpleChoice>\n      `).join('')}\n    </choiceInteraction>\n  </itemBody>\n</assessmentItem>`;\n  }\n  \n  // -- Essay / Short Answer Logic (Simplified to extendedTextInteraction) --\n  // Canvas treats Essay and Short Answer differently but structurally extendedTextInteraction covers open input.\n  return `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<assessmentItem xmlns=\"http://www.imsglobal.org/xsd/imsqti_v2p1\"\n                xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd\"\n                identifier=\"${q.id}\" title=\"${escapeXml(q.text.substring(0, 50))}...\" adaptive=\"false\" timeDependent=\"false\">\n  <responseDeclaration identifier=\"RESPONSE\" cardinality=\"single\" baseType=\"string\"/>\n  <outcomeDeclaration identifier=\"SCORE\" cardinality=\"single\" baseType=\"float\">\n    <defaultValue>\n      <value>0</value>\n    </defaultValue>\n  </outcomeDeclaration>\n  <itemBody>\n    <extendedTextInteraction responseIdentifier=\"RESPONSE\">\n      <prompt>${escapeXml(q.text)}</prompt>\n    </extendedTextInteraction>\n  </itemBody>\n</assessmentItem>`;\n};\n\n\nexport const createQtiZip = async (quiz: QuizData): Promise<Blob> => {\n  const zip = new JSZip();\n\n  // 1. Manifest\n  const questionIds = quiz.questions.map(q => q.id);\n  zip.file(\"imsmanifest.xml\", generateManifest(quiz, questionIds));\n\n  // 2. Assessment File\n  zip.file(\"assessment/assessment.xml\", generateAssessment(quiz, quiz.questions));\n\n  // 3. Item Files\n  quiz.questions.forEach(q => {\n    zip.file(`items/${q.id}.xml`, generateItem(q));\n  });\n\n  return await zip.generateAsync({ type: \"blob\" });\n};"
+            }
+          ]
+        },
+        {
+          "path": "components/QuizPreview.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Component to preview extracted questions",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "import React from 'react';\nimport { QuizData, QuestionType } from '../types';\nimport { CheckCircle2, XCircle, FileQuestion, List, Type } from 'lucide-react';\n\ninterface QuizPreviewProps {\n  data: QuizData;\n}\n\nconst QuestionIcon = ({ type }: { type: QuestionType }) => {\n  switch (type) {\n    case QuestionType.MULTIPLE_CHOICE: return <List className=\"w-5 h-5 text-blue-500\" />;\n    case QuestionType.TRUE_FALSE: return <CheckCircle2 className=\"w-5 h-5 text-green-500\" />;\n    case QuestionType.ESSAY:\n    case QuestionType.SHORT_ANSWER: return <Type className=\"w-5 h-5 text-purple-500\" />;\n    default: return <FileQuestion className=\"w-5 h-5 text-gray-500\" />;\n  }\n};\n\nconst QuizPreview: React.FC<QuizPreviewProps> = ({ data }) => {\n  return (\n    <div className=\"space-y-6\">\n      <div className=\"bg-white p-6 rounded-xl shadow-sm border border-slate-200\">\n        <h2 className=\"text-2xl font-bold text-slate-800\">{data.title}</h2>\n        {data.description && <p className=\"text-slate-600 mt-2\">{data.description}</p>}\n        <div className=\"mt-4 inline-flex items-center px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium\">\n          {data.questions.length} Vragen gevonden\n        </div>\n      </div>\n\n      <div className=\"space-y-4\">\n        {data.questions.map((q, idx) => (\n          <div key={q.id} className=\"bg-white p-5 rounded-lg border border-slate-200 hover:border-indigo-200 transition-colors\">\n            <div className=\"flex items-start gap-4\">\n              <div className=\"mt-1 flex-shrink-0 bg-slate-50 p-2 rounded-lg\">\n                <QuestionIcon type={q.type} />\n              </div>\n              <div className=\"flex-1\">\n                <div className=\"flex justify-between items-start\">\n                  <h3 className=\"font-semibold text-slate-800 text-lg\">{idx + 1}. {q.text}</h3>\n                  <span className=\"text-xs font-mono text-slate-400 bg-slate-100 px-2 py-1 rounded\">\n                    {q.points} pt\n                  </span>\n                </div>\n                \n                <div className=\"mt-4 space-y-2\">\n                  {q.type === QuestionType.ESSAY || q.type === QuestionType.SHORT_ANSWER ? (\n                    <div className=\"p-3 bg-slate-50 border border-slate-200 rounded text-slate-400 italic text-sm\">\n                      Open antwoord veld\n                    </div>\n                  ) : (\n                    <ul className=\"grid gap-2\">\n                      {q.answers.map(a => (\n                        <li \n                          key={a.id} \n                          className={`flex items-center gap-2 p-2 rounded border text-sm ${\n                            a.isCorrect \n                              ? 'bg-green-50 border-green-200 text-green-800' \n                              : 'bg-white border-slate-100 text-slate-600'\n                          }`}\n                        >\n                          {a.isCorrect ? <CheckCircle2 className=\"w-4 h-4\" /> : <XCircle className=\"w-4 h-4 opacity-30\" />}\n                          <span>{a.text}</span>\n                        </li>\n                      ))}\n                    </ul>\n                  )}\n                </div>\n              </div>\n            </div>\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n};\n\nexport default QuizPreview;"
+            }
+          ]
+        },
+        {
+          "path": "App.tsx",
+          "generationType": 0,
+          "isDone": true,
+          "description": "Main Application Logic",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "import React, { useState, useRef } from 'react';\nimport { Upload, FileText, Loader2, Download, AlertCircle, RefreshCw } from 'lucide-react';\nimport { parseMarkdownToQuiz } from './services/geminiService';\nimport { createQtiZip } from './services/qtiService';\nimport { QuizData, ProcessingState } from './types';\nimport QuizPreview from './components/QuizPreview';\n\nconst App = () => {\n  const [quizData, setQuizData] = useState<QuizData | null>(null);\n  const [state, setState] = useState<ProcessingState>({ status: 'idle', message: '' });\n  const fileInputRef = useRef<HTMLInputElement>(null);\n\n  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {\n    const file = event.target.files?.[0];\n    if (!file) return;\n\n    setState({ status: 'reading', message: 'Bestand inlezen...' });\n\n    try {\n      const text = await file.text();\n      setState({ status: 'analyzing', message: 'AI is de vragen aan het extraheren...' });\n      \n      const parsedData = await parseMarkdownToQuiz(text);\n      setQuizData(parsedData);\n      setState({ status: 'done', message: 'Klaar!' });\n    } catch (error: any) {\n      console.error(error);\n      setState({ status: 'error', message: error.message || 'Er is iets misgegaan.' });\n    }\n  };\n\n  const handleDownload = async () => {\n    if (!quizData) return;\n    setState({ status: 'generating_zip', message: 'Zip bestand genereren...' });\n    \n    try {\n      const blob = await createQtiZip(quizData);\n      const url = URL.createObjectURL(blob);\n      const a = document.createElement('a');\n      a.href = url;\n      // Sanitize title for filename\n      const safeTitle = quizData.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();\n      a.download = `${safeTitle}_canvas_import.zip`;\n      document.body.appendChild(a);\n      a.click();\n      document.body.removeChild(a);\n      URL.revokeObjectURL(url);\n      setState({ status: 'done', message: 'Download gestart!' });\n    } catch (e) {\n      setState({ status: 'error', message: 'Kon zip bestand niet maken.' });\n    }\n  };\n\n  const reset = () => {\n    setQuizData(null);\n    setState({ status: 'idle', message: '' });\n    if (fileInputRef.current) fileInputRef.current.value = '';\n  };\n\n  return (\n    <div className=\"min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8\">\n      \n      {/* Header */}\n      <div className=\"max-w-3xl w-full text-center mb-10\">\n        <h1 className=\"text-4xl font-extrabold text-slate-900 tracking-tight mb-2\">\n          <span className=\"text-indigo-600\">Canvas</span> QTI Generator\n        </h1>\n        <p className=\"text-lg text-slate-600\">\n          Upload je vragen in Markdown, AI doet de rest. Importeer direct in Canvas LMS.\n        </p>\n      </div>\n\n      <div className=\"max-w-4xl w-full space-y-8\">\n        \n        {/* Upload Section */}\n        {!quizData && state.status !== 'analyzing' && state.status !== 'reading' && (\n          <div \n            className={`\n              relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-200 cursor-pointer\n              ${state.status === 'error' ? 'border-red-300 bg-red-50' : 'border-slate-300 hover:border-indigo-400 hover:bg-white bg-slate-50/50'}\n            `}\n            onClick={() => fileInputRef.current?.click()}\n          >\n            <input \n              type=\"file\" \n              accept=\".md,.txt\" \n              className=\"hidden\" \n              ref={fileInputRef}\n              onChange={handleFileUpload}\n            />\n            \n            {state.status === 'error' ? (\n              <div className=\"flex flex-col items-center text-red-600 animate-in fade-in zoom-in\">\n                <AlertCircle className=\"w-16 h-16 mb-4\" />\n                <h3 className=\"text-xl font-semibold\">Fout bij verwerken</h3>\n                <p className=\"mt-2 text-sm opacity-80\">{state.message}</p>\n                <button \n                  onClick={(e) => { e.stopPropagation(); reset(); }}\n                  className=\"mt-6 px-4 py-2 bg-white border border-red-200 rounded-lg text-sm font-medium shadow-sm hover:bg-red-50\"\n                >\n                  Probeer opnieuw\n                </button>\n              </div>\n            ) : (\n              <div className=\"flex flex-col items-center text-slate-500\">\n                <div className=\"w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mb-6\">\n                  <Upload className=\"w-10 h-10 text-indigo-600\" />\n                </div>\n                <h3 className=\"text-xl font-semibold text-slate-900\">Upload Markdown document</h3>\n                <p className=\"mt-2 text-sm text-slate-500\">Sleep je bestand hierheen of klik om te selecteren</p>\n                <p className=\"mt-8 text-xs text-slate-400 uppercase tracking-widest\">Ondersteunt .md en .txt</p>\n              </div>\n            )}\n          </div>\n        )}\n\n        {/* Loading State */}\n        {(state.status === 'analyzing' || state.status === 'reading') && (\n          <div className=\"bg-white p-12 rounded-2xl shadow-lg border border-indigo-100 text-center animate-in fade-in zoom-in duration-300\">\n            <div className=\"relative inline-block mb-6\">\n              <div className=\"absolute inset-0 bg-indigo-200 blur-xl rounded-full opacity-50\"></div>\n              <div className=\"relative bg-white p-4 rounded-full shadow-sm\">\n                 <Loader2 className=\"w-12 h-12 text-indigo-600 animate-spin\" />\n              </div>\n            </div>\n            <h3 className=\"text-xl font-semibold text-slate-900 mb-2\">Even geduld...</h3>\n            <p className=\"text-slate-500\">{state.message}</p>\n          </div>\n        )}\n\n        {/* Results Area */}\n        {quizData && (\n          <div className=\"animate-in slide-in-from-bottom-4 duration-500 space-y-6\">\n            \n            {/* Toolbar */}\n            <div className=\"sticky top-4 z-10 bg-white/80 backdrop-blur-md border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4\">\n              <div className=\"flex items-center gap-2\">\n                 <span className=\"w-2 h-2 rounded-full bg-green-500 animate-pulse\"></span>\n                 <span className=\"font-medium text-slate-700\">Conversie succesvol</span>\n              </div>\n              <div className=\"flex gap-3 w-full sm:w-auto\">\n                <button \n                  onClick={reset}\n                  className=\"flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg font-medium transition-colors\"\n                >\n                  <RefreshCw className=\"w-4 h-4\" />\n                  Opnieuw\n                </button>\n                <button \n                  onClick={handleDownload}\n                  disabled={state.status === 'generating_zip'}\n                  className=\"flex-1 sm:flex-none justify-center flex items-center gap-2 px-6 py-2.5 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium shadow-md shadow-indigo-200 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed\"\n                >\n                  {state.status === 'generating_zip' ? (\n                    <Loader2 className=\"w-4 h-4 animate-spin\" />\n                  ) : (\n                    <Download className=\"w-4 h-4\" />\n                  )}\n                  Download ZIP voor Canvas\n                </button>\n              </div>\n            </div>\n\n            <QuizPreview data={quizData} />\n          </div>\n        )}\n      </div>\n    </div>\n  );\n};\n\nexport default App;"
+            }
+          ]
+        }
+      ]
+    },
+    "createdTimestamp": {
+      "seconds": 1769610223,
+      "nanos": 216000000
+    },
+    "doneTimestamp": {
+      "seconds": 1769610223,
+      "nanos": 995000000
+    }
+  },
+  {
+    "id": 6,
+    "author": "user",
+    "payload": {
+      "type": "text",
+      "text": "ik wil ook kunnen kopieren en plakken\n",
+      "files": [],
+      "fileUploads": [],
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1769610324,
+      "nanos": 396000000
+    }
+  },
+  {
+    "id": 7,
+    "author": "model",
+    "payload": {
+      "type": "thinking",
+      "text": "**Considering Copy-Paste Integration**\n\nI'm currently focused on integrating \"copy and paste\" functionality. The primary goal is to allow users to directly paste text content, alongside the existing file upload support. This seems like a reasonable enhancement to the tool. It should increase user friendliness.\n\n\n**Implementing Text Input**\n\nI've been working on integrating direct text input to complement the file upload feature. I've decided to proceed with a tabbed UI. \"Bestand Uploaden\" (Upload File) remains the same, while \"Tekst Plakken\" (Paste Text) will have a text area and a \"Genereer Quiz\" (Generate Quiz) button. This involves adding states for the active tab and the pasted text, along with a `handleTextSubmit` function to process the text and use `parseMarkdownToQuiz`.\n\n\n**Refining Code Structure**\n\nI'm now refining the code structure within `App.tsx` and focusing on the implementation details. I've extracted the core text processing logic into a function called `processText(text)`, which will handle both file uploads and text pasting, to eliminate duplication. I'm adding `activeTab` and `pastedText` states, alongside the logic for a tabbed UI to switch between file upload and text input, ensuring a comfortable textarea is available for the \"paste\" option.\n\n\n**Structuring Tab Navigation**\n\nI'm currently working on the UI layout for tabbed navigation between file uploads and text pasting within `App.tsx`. I'm focusing on clean visual cues and a smooth user experience. This involves two buttons styled with Tailwind CSS, one for each tab, to keep the UI simple. I've got the tab's state logic set up and will build out the rest now.\n\n\n**Revising UI Implementation**\n\nI'm now revising the UI implementation in `App.tsx`, focusing on the tabbed view. I'm adding `activeTab` and `textInput` states. The \"Analyze\" logic is refactored into a reusable `processContent(text)` function. My plan is to render tabs and conditionally render the appropriate content based on the active tab, and use a simple \"Upload\" and \"Paste\" tab. The `processContent` function is designed to handle different text input types for parsing.\n\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1769610324,
+      "nanos": 396000000
+    },
+    "doneTimestamp": {
+      "seconds": 1769610361,
+      "nanos": 329000000
+    }
+  },
+  {
+    "id": 8,
+    "author": "model",
+    "payload": {
+      "type": "text",
+      "text": "De gebruiker wil graag de mogelijkheid om tekst direct te kunnen plakken in plaats van alleen bestanden te uploaden.\n\nIk zal de `App.tsx` aanpassen om een tab-systeem toe te voegen:\n1.  **Tab 1: Bestand Uploaden** (bestaande functionaliteit).\n2.  **Tab 2: Tekst Plakken** (nieuwe functionaliteit met een tekstveld).\n\nHier zijn de wijzigingen:\n\n",
+      "cMarkNode": {}
+    },
+    "createdTimestamp": {
+      "seconds": 1769610361,
+      "nanos": 329000000
+    },
+    "doneTimestamp": {
+      "seconds": 1769610361,
+      "nanos": 612000000
+    }
+  },
+  {
+    "id": 9,
+    "author": "model",
+    "payload": {
+      "type": "generationTable",
+      "entries": [
+        {
+          "path": "App.tsx",
+          "generationType": 1,
+          "isDone": true,
+          "description": "Added functionality to paste text directly via a tabbed interface.",
+          "diffs": [
+            {
+              "target": "",
+              "replacement": "import React, { useState, useRef } from 'react';\nimport { Upload, FileText, Loader2, Download, AlertCircle, RefreshCw, ClipboardType } from 'lucide-react';\nimport { parseMarkdownToQuiz } from './services/geminiService';\nimport { createQtiZip } from './services/qtiService';\nimport { QuizData, ProcessingState } from './types';\nimport QuizPreview from './components/QuizPreview';\n\nconst App = () => {\n  const [quizData, setQuizData] = useState<QuizData | null>(null);\n  const [state, setState] = useState<ProcessingState>({ status: 'idle', message: '' });\n  const [activeTab, setActiveTab] = useState<'upload' | 'paste'>('upload');\n  const [pastedText, setPastedText] = useState('');\n  const fileInputRef = useRef<HTMLInputElement>(null);\n\n  const processContent = async (text: string) => {\n    if (!text.trim()) return;\n    \n    setState({ status: 'analyzing', message: 'AI is de vragen aan het extraheren...' });\n\n    try {\n      const parsedData = await parseMarkdownToQuiz(text);\n      setQuizData(parsedData);\n      setState({ status: 'done', message: 'Klaar!' });\n    } catch (error: any) {\n      console.error(error);\n      setState({ status: 'error', message: error.message || 'Er is iets misgegaan.' });\n    }\n  };\n\n  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {\n    const file = event.target.files?.[0];\n    if (!file) return;\n\n    setState({ status: 'reading', message: 'Bestand inlezen...' });\n\n    try {\n      const text = await file.text();\n      await processContent(text);\n    } catch (error: any) {\n      console.error(error);\n      setState({ status: 'error', message: error.message || 'Kon bestand niet lezen.' });\n    }\n  };\n\n  const handleTextSubmit = () => {\n    processContent(pastedText);\n  };\n\n  const handleDownload = async () => {\n    if (!quizData) return;\n    setState({ status: 'generating_zip', message: 'Zip bestand genereren...' });\n    \n    try {\n      const blob = await createQtiZip(quizData);\n      const url = URL.createObjectURL(blob);\n      const a = document.createElement('a');\n      a.href = url;\n      // Sanitize title for filename\n      const safeTitle = quizData.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();\n      a.download = `${safeTitle}_canvas_import.zip`;\n      document.body.appendChild(a);\n      a.click();\n      document.body.removeChild(a);\n      URL.revokeObjectURL(url);\n      setState({ status: 'done', message: 'Download gestart!' });\n    } catch (e) {\n      setState({ status: 'error', message: 'Kon zip bestand niet maken.' });\n    }\n  };\n\n  const reset = () => {\n    setQuizData(null);\n    setState({ status: 'idle', message: '' });\n    setPastedText('');\n    if (fileInputRef.current) fileInputRef.current.value = '';\n  };\n\n  return (\n    <div className=\"min-h-screen bg-slate-50 flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8\">\n      \n      {/* Header */}\n      <div className=\"max-w-3xl w-full text-center mb-10\">\n        <h1 className=\"text-4xl font-extrabold text-slate-900 tracking-tight mb-2\">\n          <span className=\"text-indigo-600\">Canvas</span> QTI Generator\n        </h1>\n        <p className=\"text-lg text-slate-600\">\n          Upload je vragen of plak je tekst, AI doet de rest. Importeer direct in Canvas LMS.\n        </p>\n      </div>\n\n      <div className=\"max-w-4xl w-full space-y-8\">\n        \n        {/* Input Section (Tabs) */}\n        {!quizData && state.status !== 'analyzing' && state.status !== 'reading' && (\n          <div className=\"bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden\">\n            \n            {/* Tabs Header */}\n            <div className=\"flex border-b border-slate-200\">\n              <button\n                onClick={() => setActiveTab('upload')}\n                className={`flex-1 py-4 text-sm font-medium text-center transition-colors flex items-center justify-center gap-2\n                  ${activeTab === 'upload' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}\n                `}\n              >\n                <Upload className=\"w-4 h-4\" />\n                Bestand Uploaden\n              </button>\n              <button\n                onClick={() => setActiveTab('paste')}\n                className={`flex-1 py-4 text-sm font-medium text-center transition-colors flex items-center justify-center gap-2\n                  ${activeTab === 'paste' ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'}\n                `}\n              >\n                <ClipboardType className=\"w-4 h-4\" />\n                Tekst Plakken\n              </button>\n            </div>\n\n            {/* Tab Content */}\n            <div className=\"p-8\">\n              {state.status === 'error' ? (\n                 <div className=\"flex flex-col items-center text-red-600 animate-in fade-in zoom-in py-8\">\n                  <AlertCircle className=\"w-16 h-16 mb-4\" />\n                  <h3 className=\"text-xl font-semibold\">Fout bij verwerken</h3>\n                  <p className=\"mt-2 text-sm opacity-80\">{state.message}</p>\n                  <button \n                    onClick={(e) => { e.stopPropagation(); reset(); }}\n                    className=\"mt-6 px-4 py-2 bg-white border border-red-200 rounded-lg text-sm font-medium shadow-sm hover:bg-red-50\"\n                  >\n                    Probeer opnieuw\n                  </button>\n                </div>\n              ) : activeTab === 'upload' ? (\n                <div \n                  className=\"border-2 border-dashed border-slate-300 rounded-xl p-10 text-center hover:border-indigo-400 hover:bg-slate-50 transition-all cursor-pointer\"\n                  onClick={() => fileInputRef.current?.click()}\n                >\n                  <input \n                    type=\"file\" \n                    accept=\".md,.txt\" \n                    className=\"hidden\" \n                    ref={fileInputRef}\n                    onChange={handleFileUpload}\n                  />\n                  <div className=\"w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4\">\n                    <Upload className=\"w-8 h-8 text-indigo-600\" />\n                  </div>\n                  <h3 className=\"text-lg font-semibold text-slate-900\">Klik om te uploaden</h3>\n                  <p className=\"mt-1 text-sm text-slate-500\">Ondersteunt .md en .txt bestanden</p>\n                </div>\n              ) : (\n                <div className=\"space-y-4\">\n                  <textarea\n                    className=\"w-full h-64 p-4 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-slate-800 placeholder:text-slate-400 resize-none font-mono text-sm\"\n                    placeholder=\"Plak hier je vragen en antwoorden...\"\n                    value={pastedText}\n                    onChange={(e) => setPastedText(e.target.value)}\n                  ></textarea>\n                  <div className=\"flex justify-end\">\n                    <button\n                      onClick={handleTextSubmit}\n                      disabled={!pastedText.trim()}\n                      className=\"px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm\"\n                    >\n                      Genereer Quiz\n                    </button>\n                  </div>\n                </div>\n              )}\n            </div>\n          </div>\n        )}\n\n        {/* Loading State */}\n        {(state.status === 'analyzing' || state.status === 'reading') && (\n          <div className=\"bg-white p-12 rounded-2xl shadow-lg border border-indigo-100 text-center animate-in fade-in zoom-in duration-300\">\n            <div className=\"relative inline-block mb-6\">\n              <div className=\"absolute inset-0 bg-indigo-200 blur-xl rounded-full opacity-50\"></div>\n              <div className=\"relative bg-white p-4 rounded-full shadow-sm\">\n                 <Loader2 className=\"w-12 h-12 text-indigo-600 animate-spin\" />\n              </div>\n            </div>\n            <h3 className=\"text-xl font-semibold text-slate-900 mb-2\">Even geduld...</h3>\n            <p className=\"text-slate-500\">{state.message}</p>\n          </div>\n        )}\n\n        {/* Results Area */}\n        {quizData && (\n          <div className=\"animate-in slide-in-from-bottom-4 duration-500 space-y-6\">\n            \n            {/* Toolbar */}\n            <div className=\"sticky top-4 z-10 bg-white/80 backdrop-blur-md border border-slate-200 p-4 rounded-xl shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4\">\n              <div className=\"flex items-center gap-2\">\n                 <span className=\"w-2 h-2 rounded-full bg-green-500 animate-pulse\"></span>\n                 <span className=\"font-medium text-slate-700\">Conversie succesvol</span>\n              </div>\n              <div className=\"flex gap-3 w-full sm:w-auto\">\n                <button \n                  onClick={reset}\n                  className=\"flex-1 sm:flex-none justify-center flex items-center gap-2 px-4 py-2.5 text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg font-medium transition-colors\"\n                >\n                  <RefreshCw className=\"w-4 h-4\" />\n                  Opnieuw\n                </button>\n                <button \n                  onClick={handleDownload}\n                  disabled={state.status === 'generating_zip'}\n                  className=\"flex-1 sm:flex-none justify-center flex items-center gap-2 px-6 py-2.5 text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg font-medium shadow-md shadow-indigo-200 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed\"\n                >\n                  {state.status === 'generating_zip' ? (\n                    <Loader2 className=\"w-4 h-4 animate-spin\" />\n                  ) : (\n                    <Download className=\"w-4 h-4\" />\n                  )}\n                  Download ZIP voor Canvas\n                </button>\n              </div>\n            </div>\n\n            <QuizPreview data={quizData} />\n          </div>\n        )}\n      </div>\n    </div>\n  );\n};\n\nexport default App;"
+            }
+          ]
+        }
+      ]
+    },
+    "createdTimestamp": {
+      "seconds": 1769610362,
+      "nanos": 739000000
+    },
+    "doneTimestamp": {
+      "seconds": 1769610387,
+      "nanos": 970000000
+    }
+  }
+]
