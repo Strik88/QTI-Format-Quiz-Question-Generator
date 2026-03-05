@@ -2,9 +2,9 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { QuizData, QuestionType } from "../types";
 
 export const parseMarkdownToQuiz = async (markdownText: string): Promise<QuizData> => {
-  const apiKey = process.env.API_KEY;
-  if (!apiKey) {
-    throw new Error("API Key ontbreekt. Controleer je configuratie.");
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey || apiKey === 'your_api_key_here') {
+    throw new Error("Google AI API Key ontbreekt. Voeg je VITE_GEMINI_API_KEY toe aan het .env bestand.");
   }
 
   const ai = new GoogleGenAI({ apiKey });
