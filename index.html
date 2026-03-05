@@ -3,11 +3,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Canvas QTI Maker AI</title>
+    <title>Striks - Canvas QTI Generator</title>
+    <link rel="icon" type="image/png" href="/Logo_flavicon.png" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-      body { font-family: 'Inter', sans-serif; }
+      body { font-family: 'Montserrat', sans-serif; }
+      :root {
+        --striks-navy: #1A2B50;
+        --striks-magenta: #C64B8C;
+        --striks-turquoise: #3BC5C9;
+        --striks-orange: #F27052;
+        --striks-gold: #F9B854;
+        --striks-ocean: #4B99D2;
+        --striks-light: #F7F9FC;
+      }
+      .striks-gradient {
+        background: linear-gradient(90deg, #C64B8C 0%, #F9B854 50%, #3BC5C9 100%);
+      }
+      .striks-gradient-text {
+        background: linear-gradient(90deg, #C64B8C 0%, #F9B854 50%, #3BC5C9 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .striks-btn-primary {
+        background: var(--striks-navy);
+        transition: background 0.2s ease;
+      }
+      .striks-btn-primary:hover {
+        background: #243d73;
+      }
+      .striks-btn-download {
+        background: linear-gradient(135deg, #1A2B50 0%, #3BC5C9 100%);
+        transition: opacity 0.2s ease, transform 0.1s ease;
+      }
+      .striks-btn-download:hover {
+        opacity: 0.92;
+      }
+      .striks-tab-active {
+        border-bottom: 2px solid var(--striks-turquoise);
+        color: var(--striks-navy);
+        background: rgba(59,197,201,0.07);
+      }
+      .striks-focus:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--striks-turquoise);
+        border-color: var(--striks-turquoise);
+      }
     </style>
   <script type="importmap">
 {
@@ -23,7 +66,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-slate-50 text-slate-900 antialiased">
+  <body class="text-slate-900 antialiased" style="background-color: #F7F9FC;">
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
