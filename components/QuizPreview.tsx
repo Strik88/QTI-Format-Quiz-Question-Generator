@@ -1,6 +1,6 @@
 import React from 'react';
 import { QuizData, QuestionType } from '../types';
-import { CheckCircle2, XCircle, FileQuestion, List, Type } from 'lucide-react';
+import { CircleCheck as CheckCircle2, Circle as XCircle, FileQuestionMark as FileQuestion, List, Type } from 'lucide-react';
 
 interface QuizPreviewProps {
   data: QuizData;

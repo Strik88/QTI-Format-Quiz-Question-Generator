@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, Loader2, Download, AlertCircle, RefreshCw, ClipboardType, HelpCircle, Info } from 'lucide-react';
+import { Upload, Loader as Loader2, Download, CircleAlert as AlertCircle, RefreshCw, ClipboardType, Circle as HelpCircle, Info } from 'lucide-react';
 import { parseMarkdownToQuiz } from './services/geminiService';
 import { createQtiZip } from './services/qtiService';
 import { QuizData, ProcessingState } from './types';
