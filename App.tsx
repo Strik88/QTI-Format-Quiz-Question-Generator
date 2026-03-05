@@ -233,11 +233,6 @@ const App = () => {
                       title: 'Controleer',
                       desc: 'Bekijk de gegenereerde preview. Je ziet direct welke vragen zijn herkend en wat de correcte antwoorden zijn.',
                     },
-                    {
-                      step: '3',
-                      title: 'Download & Import',
-                      desc: 'Download het QTI .zip bestand en importeer dit in Canvas via Instellingen > Cursusinhoud importeren.',
-                    },
                   ].map(({ step, title, desc }) => (
                     <div key={step} className="space-y-3">
                       <div
@@ -250,6 +245,30 @@ const App = () => {
                       <p className="text-sm text-slate-600 leading-relaxed">{desc}</p>
                     </div>
                   ))}
+
+                  <div className="space-y-3">
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-white text-base"
+                      style={{ background: 'linear-gradient(135deg, #1A2B50 0%, #3BC5C9 100%)' }}
+                    >
+                      3
+                    </div>
+                    <h3 className="font-semibold" style={{ color: '#1A2B50' }}>Download & Import</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed mb-2">Download de QTI .zip en importeer in Canvas:</p>
+                    <ol className="text-sm text-slate-600 space-y-1 list-none">
+                      {[
+                        'Ga naar Item Banks',
+                        'Klik rechtsboven op + Bank, geef een naam en klik Create bank',
+                        'Open de nieuwe bank en klik rechtsboven op de drie puntjes (...)',
+                        'Kies Import content en selecteer de gedownloade .zip',
+                      ].map((s, i) => (
+                        <li key={i} className="flex gap-2">
+                          <span className="shrink-0 font-semibold" style={{ color: '#3BC5C9' }}>{i + 1}.</span>
+                          <span>{s}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
                 </div>
 
                 <div
